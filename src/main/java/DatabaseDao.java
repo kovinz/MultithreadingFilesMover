@@ -32,18 +32,22 @@ public class DatabaseDao {
 
     public void processTable() {
         ExecutorService executorService = Executors.newFixedThreadPool(threadConfig.getQuantityOfThreads());
+
         String quantityTop = queryConfig.getQuantityTop() == 0 ? "" : "TOP " + queryConfig.getQuantityTop();
         try (
                 Connection connection = dataSource.getConnection();
+
                 PreparedStatement stmnt =
                         connection.prepareStatement(String.format(SELECT_ALL_TABLEROWS, quantityTop,
                                 queryConfig.getBeforeFileName() + "%" + queryConfig.getCutInTheEnd()));
-                ResultSet rs = stmnt.executeQuery();
+
+                ResultSet rs = stmnt.executeQuery()
         ) {
             List<TableRow> tableRowList = new ArrayList<>();
 
             while (rs.next()) {
                 tableRowList.add(constructTableRow(rs));
+
                 if (tableRowList.size() >= threadConfig.getQuantityOfRowsForThread()) {
                     executorService.execute(new Runner(tableRowList, config, dataSource));
                     tableRowList = new ArrayList<>();

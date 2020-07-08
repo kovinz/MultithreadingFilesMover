@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class TableRow {
     private final Integer id;
@@ -9,6 +10,11 @@ public class TableRow {
         this.id = id;
         this.filePath = filePath;
         this.createDate = createDate;
+    }
+
+    public static void main(String[] args) {
+        ZoneId.getAvailableZoneIds().stream()
+                .sorted().forEach(System.out::println);
     }
 
     public Integer getId() {

@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -32,24 +31,20 @@ public class Runner implements Runnable {
     public void run() {
         TableRow currentTableRow = null;
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DatabaseDao.UPDATE_TABLEROW_DIRECTORY)) {
-//            System.out.println(Thread.currentThread().getId() + " consumer started running");
+            PreparedStatement preparedStatement = connection.prepareStatement(DatabaseDao.UPDATE_TABLEROW_DIRECTORY)) {
             for (TableRow tableRow : tableRowList) {
                 try {
                     currentTableRow = tableRow;
                     Path fromPath = getInputPath(tableRow);
 
                     if (Files.exists(fromPath)) {
-//                    System.out.println("File exists: " + fromPath);
                         Path outputPath = getOutputPath(tableRow);
                         Files.createDirectories(outputPath.getParent());
-//                    System.out.println("Created directory " + outputDirectory);
                         Files.move(fromPath, outputPath);
 
                         String directoryForDatabase = getPathStrForDataBase(outputPath);
                         DatabaseDao.changeDirectory(preparedStatement, tableRow.getId(), directoryForDatabase);
                         System.out.println(tableRow.getId() + " moved " + tableRow.getFilePath() + " to " + directoryForDatabase);
-//                    System.out.println("Directory in database changed to " + directoryForDatabase);
                     } else {
                         System.out.println(tableRow.getId() + " file does not exist: " + tableRow.getFilePath());
                     }
@@ -64,25 +59,25 @@ public class Runner implements Runnable {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Ошибка при коннекшене к базе данных");
+            System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
         }
     }
 
     /**
-     * Исходя из данных в tableRow и конфиге определяет путь, из которого будет перемещен файл
+     * пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ tableRow пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
      *
-     * @param tableRow элемент, определяющий файл для переноса
-     * @return путь, из которого будет перемещен файл
+     * @param tableRow пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+     * @return пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
      */
     private Path getInputPath(TableRow tableRow) {
         return Paths.get(directoryConfig.getPredicateFromDirectory(), cutInTheEnd(tableRow.getFilePath()));
     }
 
     /**
-     * Исходя из данных в tableRow и конфиге определяет путь, в который будет перемещен файл
+     * пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ tableRow пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
      *
-     * @param tableRow элемент, определяющий файл для переноса
-     * @return путь, в который будет перемещен файл
+     * @param tableRow пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+     * @return пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
      */
     private Path getOutputPath(TableRow tableRow) {
         Path pathFromDB = Paths.get(cutInTheEnd(tableRow.getFilePath()));
@@ -102,10 +97,10 @@ public class Runner implements Runnable {
     }
 
     /**
-     * обрезает промежуточные подпапки если cleanPath == true и в любом случае заменяет первую директорию
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ cleanPath == true пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      *
-     * @param pathToChange путь для изменения
-     * @return путь с измененной первой директорией и удалёнными промежуточнымиподпапками, если cleanPath == true
+     * @param pathToChange пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+     * @return пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ cleanPath == true
      */
     private Path changeDirectory(Path pathToChange) {
         if (queryConfig.getCleanPath()) {
@@ -117,21 +112,21 @@ public class Runner implements Runnable {
     }
 
     /**
-     * Обрезает в конце путя к файлу строку, которая указана в cutInTheEnd конфига
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ cutInTheEnd пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      *
-     * @param filePath путь к файлу из БД
-     * @return строку с обрезанной частью в конце, которая (часть) указана в cutInTheEnd конфига
+     * @param filePath пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ
+     * @return пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ) пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ cutInTheEnd пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      */
     private String cutInTheEnd(String filePath) {
         return filePath.substring(0, filePath.length() - queryConfig.getCutInTheEnd().length());
     }
 
     /**
-     * Обрезает у путя часть в начале, которая указана в predicateToDirectory конфига, переводит в строку и добавляет
-     * часть cutInTheEnd
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ predicateToDirectory пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+     * пїЅпїЅпїЅпїЅпїЅ cutInTheEnd
      *
-     * @param outputPath полный путь, в который будет перемещён файл
-     * @return путь к файлу, который будет записан в БД
+     * @param outputPath пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+     * @return пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ
      */
     private String getPathStrForDataBase(Path outputPath) {
         return File.separator + Paths.get(directoryConfig.getPredicateToDirectory()).relativize(outputPath).toString()
