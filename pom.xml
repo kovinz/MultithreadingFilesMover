@@ -6,12 +6,16 @@
 
     <groupId>moveFiles</groupId>
     <artifactId>com.kovin</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
+    <scm>
+        <connection>scm:git:git://github.com/kovinz/MultithreadingFilesMover</connection>
+    </scm>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -38,6 +42,51 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>update-versions</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <propertyPrefix>parsedVersion</propertyPrefix>
+                </configuration>
+                <executions>
+                    <execution>
+<!--                        <phase>validate</phase>-->
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <newVersion>${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}${parsedVersion.qualifier?}</newVersion>
+                </configuration>
+                <executions>
+                    <execution>
+<!--                        <phase>validate</phase>-->
+                        <goals>
+                            <goal>set</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
