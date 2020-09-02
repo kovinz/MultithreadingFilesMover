@@ -9,6 +9,7 @@
     <version>1.1-SNAPSHOT</version>
     <scm>
         <connection>scm:git:git://github.com/kovinz/MultithreadingFilesMover</connection>
+        <developerConnection>scm:git:git://github.com/kovinz/MultithreadingFilesMover</developerConnection>
     </scm>
     <build>
         <plugins>
